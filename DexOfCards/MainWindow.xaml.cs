@@ -9,10 +9,11 @@ public partial class MainWindow
 {
     public MainWindow()
     {
+        var services = new ServiceCollection();
+        services.AddBlazorWebView();
+        Resources.Add("services", services.BuildServiceProvider());
         InitializeComponent();
-
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddWpfBlazorWebView();
-        Resources.Add("services", serviceCollection.BuildServiceProvider());
     }
 }
+
+public partial class Main { }
