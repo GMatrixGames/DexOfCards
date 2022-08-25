@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DexOfCards.Framework.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DexOfCards;
 
@@ -11,9 +12,12 @@ public partial class MainWindow
     {
         var services = new ServiceCollection();
         services.AddWpfBlazorWebView();
+#if DEBUG
+        services.AddBlazorWebViewDeveloperTools();
+#endif
         Resources.Add("services", services.BuildServiceProvider());
         InitializeComponent();
+
+        DataStorage.Init();
     }
 }
-
-public partial class Main { }

@@ -2,6 +2,14 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+body {
+    background: #0E0E0E;
+}
+
+main > .container:first-child {
+    padding: 60px 15px 0;
+}
+
 h1:focus {
     outline: none;
 }

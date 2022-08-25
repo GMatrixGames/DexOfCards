@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DexOfCards"
         xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:converters="clr-namespace:DexOfCards.Views.Resources.Converters" mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Dex of Cards"
+        Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={converters:RatioConverter}, ConverterParameter='0.85'}"
+        Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={converters:RatioConverter}, ConverterParameter='0.75'}">
     <Grid>
-        <blazor:BlazorWebView HostPage="wwwroot\index.html" Services="{DynamicResource services}" x:Name="blazorWebView1">
+        <blazor:BlazorWebView HostPage="wwwroot\index.html" Services="{DynamicResource services}">
             <blazor:BlazorWebView.RootComponents>
                 <blazor:RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
             </blazor:BlazorWebView.RootComponents>

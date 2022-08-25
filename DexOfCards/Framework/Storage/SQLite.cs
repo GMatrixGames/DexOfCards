@@ -9,7 +9,7 @@ public static class SQLite
 {
     public static SqliteConnection GetSql()
     {
-        var connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "data.s3db")};");
+        var connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "storage.s3db")};");
 
         try
         {

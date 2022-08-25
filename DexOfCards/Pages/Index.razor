@@ -1,14 +1,27 @@
 ﻿@page "/"
-@using DexOfCards.Utilities
-@using System.IO
+@using DexOfCards.Framework.Data
 
-<img src="data:image/png;base64,@(base64)"/>
+<main>
+    <div class="container center">
+        <div class="mt-3">
+            <div>
+                <div class="row gy-3">
+                 @foreach (var card in DataStorage.Cards)
+                 {
+                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 corner-radial text-center">
+                         <div class="pokemon-card shadow-sm">
+                             <div style="position: relative">
+                                 <div class="menu-more">
+                                     <img class="img-fluid card corner-radial" src="@card.CardImage" alt=""/>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-@code {
-    private string base64;
-
-    protected override void OnInitialized()
-    {
-        base64 = File.OpenRead(Path.Combine(FilePaths.Resources, "Sets", "NonAsia", "LostOrigin.png")).ConvertToBase64();
-    }
-}
+<!-- Width of Set images / Asia: 27px / US: 30 px -->

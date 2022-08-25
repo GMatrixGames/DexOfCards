@@ -10,7 +10,6 @@ public static class SqlExtensions
         var ex = new SqliteCommand(command, connection);
         if (parameters is { Length: > 0}) ex.Parameters.AddRange(parameters);
         var reader = await ex.ExecuteReaderAsync();
-        ex.Dispose();
         return reader;
     }
 
@@ -19,6 +18,5 @@ public static class SqlExtensions
         var ex = new SqliteCommand(command, connection);
         if (parameters is { Length: > 0}) ex.Parameters.AddRange(parameters);
         ex.ExecuteNonQuery();
-        ex.Dispose();
     }
 }
