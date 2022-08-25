@@ -1,26 +1,14 @@
 ﻿@page "/"
-@using System.Windows
 @using DexOfCards.Utilities
-
-<h3>Hello, world!</h3>
-
-<p>The current count is <strong>@Counter</strong></p>
+@using System.IO
 
 <img src="data:image/png;base64,@(base64)"/>
-
-<button @onclick="IncrementCount">Increment</button>
 
 @code {
     private string base64;
 
     protected override void OnInitialized()
     {
-        base64 = Application.GetResourceStream(new Uri("/DexOfCards;component/Resources/Sets/Asia/HighClassDeoxys-CN.png", UriKind.Relative))?.Stream.ConvertToBase64();
-    }
-
-    int Counter = 0;
-    void IncrementCount()
-    {
-        Counter++;
+        base64 = File.OpenRead(Path.Combine(FilePaths.Resources, "Sets", "NonAsia", "LostOrigin.png")).ConvertToBase64();
     }
 }

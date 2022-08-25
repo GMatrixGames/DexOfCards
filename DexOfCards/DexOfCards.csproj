@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
     <IsPackable>false</IsPackable>
@@ -17,22 +17,27 @@
     <Content Update="wwwroot\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\storage.s3db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Cards\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sets\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.101-preview.10.2068" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.486" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Sets\Asia\*.png" />
-    <None Remove="Resources\Sets\NonAsia\*.png" />
     <None Remove="Resources\CherishBall.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Sets\Asia\*.png" />
-    <Resource Include="Resources\Sets\NonAsia\*.png" />
     <Resource Include="Resources\CherishBall.ico" />
   </ItemGroup>
 

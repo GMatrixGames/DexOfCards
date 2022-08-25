@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
+using DexOfCards.Utilities;
 using Microsoft.Data.Sqlite;
 
 namespace DexOfCards.Framework.Storage;
@@ -9,7 +9,7 @@ public static class SQLite
 {
     public static SqliteConnection GetSql()
     {
-        var connection = new SqliteConnection(@$"Data Source={Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location)}\data.s3db;");
+        var connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "data.s3db")};");
 
         try
         {
