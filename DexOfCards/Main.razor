@@ -8,19 +8,19 @@
                          Breakpoint="Breakpoint.Desktop"
                          NavigationBreakpoint="Breakpoint.Tablet"
                          ThemeContrast="ThemeContrast.Dark">
-                        <BarToggler Bar="@sidebar" />
+                        <BarToggler Bar="@sidebar"/>
                         <BarBrand>
                             <BarItem>
-                                <BarLink To="#">
-                                    <BarIcon IconName="IconName.Dashboard"/>
-                                    Blazorise Demo
+                                <BarLink>
+                                    <img class="b-bar-icon" src="images/icons/pokeball.png" style="color: white; max-width: 31px;"/>
+                                    Dex of Cards
                                 </BarLink>
                             </BarItem>
                         </BarBrand>
                         <BarMenu>
                             <BarStart>
                                 <BarItem>
-                                    <BarLink To="#home">
+                                    <BarLink To="/">
                                         <BarIcon IconName="IconName.Dashboard"/>
                                         Home
                                     </BarLink>
@@ -59,15 +59,12 @@
                 </LayoutContent>
             </Layout>
         </Layout>
-        <LayoutFooter>
-            Footer
-        </LayoutFooter>
     </Layout>
 </ThemeProvider>
 
 @code {
     private Bar sidebar;
-    
+
     private readonly Theme theme = new()
     {
         BackgroundOptions = new ThemeBackgroundOptions
