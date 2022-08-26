@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using DexOfCards.Utilities;
 using Microsoft.Data.Sqlite;
@@ -11,7 +12,7 @@ public static class SQLite
 
     public static SqliteConnection GetSql()
     {
-        if (_connection != null) return _connection;
+        if (_connection is { State: ConnectionState.Open }) return _connection;
         _connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "storage.s3db")};");
 
         try
