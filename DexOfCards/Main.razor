@@ -40,6 +40,15 @@
                                         </BarDropdownMenu>
                                     </BarDropdown>
                                 </BarItem>
+                                @if (debug)
+                                {
+                                    <BarItem>
+                                        <BarLink To="/admin">
+                                            <BarIcon IconName="IconName.Server"/>
+                                            DB Admin Panel
+                                        </BarLink>
+                                    </BarItem>
+                                }
                             </BarStart>
                         </BarMenu>
                     </Bar>
@@ -63,6 +72,11 @@
 </ThemeProvider>
 
 @code {
+#if DEBUG
+    private bool debug = true;
+#else
+    private bool debug = false;
+#endif
     private Bar sidebar;
 
     private readonly Theme theme = new()

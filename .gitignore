@@ -351,3 +351,5 @@ MigrationBackup/
 
 # Jetbrains Rider
 .idea/
+
+DexOfCards/Pages/Admin.razor

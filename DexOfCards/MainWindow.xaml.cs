@@ -31,7 +31,7 @@ public partial class MainWindow
 
         DataStorage.Init();
     }
-    
+
     private void BlazorWebViewInitialized(object sender, BlazorWebViewInitializedEventArgs e)
     {
         e.WebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
