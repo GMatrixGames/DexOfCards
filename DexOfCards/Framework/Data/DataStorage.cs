@@ -26,7 +26,6 @@ public static class DataStorage
             ));
         }
 
-        await using var conn2 = SQLite.GetSql();
         read = await conn.ExecuteReaderAsync("SELECT * FROM sets");
         while (await read.ReadAsync())
         {

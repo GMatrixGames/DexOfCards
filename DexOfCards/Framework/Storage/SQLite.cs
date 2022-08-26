@@ -7,19 +7,22 @@ namespace DexOfCards.Framework.Storage;
 
 public static class SQLite
 {
+    private static SqliteConnection _connection;
+
     public static SqliteConnection GetSql()
     {
-        var connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "storage.s3db")};");
+        if (_connection != null) return _connection;
+        _connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "storage.s3db")};");
 
         try
         {
-            connection.Open();
+            _connection.Open();
         }
         catch
         {
             Console.WriteLine("SQLite connection failed to open!");
         }
 
-        return connection;
+        return _connection;
     }
 }
