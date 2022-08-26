@@ -3,6 +3,7 @@ using Blazorise.Bootstrap5;
 using Blazorise.Icons.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using DexOfCards.Framework.Data;
+using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DexOfCards;
@@ -29,5 +30,10 @@ public partial class MainWindow
         InitializeComponent();
 
         DataStorage.Init();
+    }
+    
+    private void BlazorWebViewInitialized(object sender, BlazorWebViewInitializedEventArgs e)
+    {
+        e.WebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
     }
 }

@@ -67,9 +67,24 @@
 
     private readonly Theme theme = new()
     {
-        BackgroundOptions = new ThemeBackgroundOptions
+        BodyOptions = new ThemeBodyOptions
         {
-            Body = "#0E0E0E"
+            BackgroundColor = "#0E0E0E"
+        },
+        BarOptions = new ThemeBarOptions
+        {
+            DarkColors = new ThemeBarColorOptions
+            {
+                BackgroundColor = "#242424",
+                DropdownColorOptions = new ThemeBarDropdownColorOptions
+                {
+                    BackgroundColor = "#353535"
+                },
+                ItemColorOptions = new ThemeBarItemColorOptions
+                {
+                    ActiveBackgroundColor = "#F83526"
+                }
+            },
         }
     };
 
