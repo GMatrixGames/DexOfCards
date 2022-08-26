@@ -1,4 +1,8 @@
-﻿using DexOfCards.Framework.Data;
+﻿using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using DexOfCards.Framework.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DexOfCards;
@@ -15,6 +19,12 @@ public partial class MainWindow
 #if DEBUG
         services.AddBlazorWebViewDeveloperTools();
 #endif
+        services.AddBlazorise(opt => opt.Immediate = true)
+            .AddBootstrap5Providers()
+            .AddBootstrap5Components()
+            .AddBootstrapIcons()
+            .AddFontAwesomeIcons();
+
         Resources.Add("services", services.BuildServiceProvider());
         InitializeComponent();
 
