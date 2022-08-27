@@ -11,8 +11,8 @@ public class CardSetModel
         SetId = id;
         SetName = name;
         CardsInSet = cardAmount;
-        Image = image;
-        LanguageStrings = languages.Contains(',') ? languages.Split(',') : new[] { languages };
+        SetImage = image;
+        Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         SubRegion = id.SubstringAfterLast('_');
     }
 
@@ -20,18 +20,6 @@ public class CardSetModel
     public string SetName { get; }
     public string CardsInSet { get; }
     public string SubRegion { get; }
-    private string Image { get; }
-    private string[] LanguageStrings { get; }
-
-    public IList<string> SetImages
-    {
-        get
-        {
-            var ret = new List<string>();
-
-            
-            
-            return ret;
-        }
-    }
+    public string SetImage { get; }
+    public string[] Languages { get; }
 }

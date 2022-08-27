@@ -35,21 +35,11 @@ public static class DataStorage
                 read.GetString("setname"),
                 read.GetString("cardsInSet"),
                 read.GetString("setImage"),
-                read.GetString("languages")
+                read.GetString("language")
             ));
         }
     }
 
-    public static Dictionary<CardSetModel, List<CardModel>> GetCardsAndModels()
-    {
-        var ret = new Dictionary<CardSetModel, List<CardModel>>();
-
-        foreach (var set in CardSets)
-        {
-            var list = Cards.Where(card => card.CardSet == set.SetId).ToList();
-            ret.Add(set, list);
-        }
-
-        return ret;
-    }
+    public static CardSetModel GetModel(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet && a.Languages.Any(b => b == model.Language));
+    public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).ToList();
 }
