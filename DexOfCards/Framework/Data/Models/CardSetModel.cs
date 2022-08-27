@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DexOfCards.Utilities;
 
 namespace DexOfCards.Framework.Data.Models;
 
@@ -12,14 +13,25 @@ public class CardSetModel
         CardsInSet = cardAmount;
         Image = image;
         LanguageStrings = languages.Contains(',') ? languages.Split(',') : new[] { languages };
+        SubRegion = id.SubstringAfterLast('_');
     }
 
     public string SetId { get; }
     public string SetName { get; }
     public string CardsInSet { get; }
+    public string SubRegion { get; }
     private string Image { get; }
     private string[] LanguageStrings { get; }
-    private bool IsAsia => !LanguageStrings.Contains("NonAsia");
 
-    public IList<string> SetImages => LanguageStrings.Select(lang => $"images/Sets/{(IsAsia ? "Asia" : "NonAsia")}/{Image.Replace("{LANG}", lang)}").ToList();
+    public IList<string> SetImages
+    {
+        get
+        {
+            var ret = new List<string>();
+
+            
+            
+            return ret;
+        }
+    }
 }

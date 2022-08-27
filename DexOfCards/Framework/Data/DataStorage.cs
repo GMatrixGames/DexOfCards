@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using DexOfCards.Framework.Data.Models;
 using DexOfCards.Framework.Storage;
 using DexOfCards.Utilities;
@@ -37,5 +38,18 @@ public static class DataStorage
                 read.GetString("languages")
             ));
         }
+    }
+
+    public static Dictionary<CardSetModel, List<CardModel>> GetCardsAndModels()
+    {
+        var ret = new Dictionary<CardSetModel, List<CardModel>>();
+
+        foreach (var set in CardSets)
+        {
+            var list = Cards.Where(card => card.CardSet == set.SetId).ToList();
+            ret.Add(set, list);
+        }
+
+        return ret;
     }
 }
