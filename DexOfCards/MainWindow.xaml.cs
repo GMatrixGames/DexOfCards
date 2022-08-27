@@ -34,6 +34,8 @@ public partial class MainWindow
 
     private void BlazorWebViewInitialized(object sender, BlazorWebViewInitializedEventArgs e)
     {
+#if !DEBUG
         e.WebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
+#endif
     }
 }
