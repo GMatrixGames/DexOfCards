@@ -9,8 +9,8 @@ namespace DexOfCards.Framework.Data;
 
 public static class DataStorage
 {
-    public static readonly List<CardModel> Cards = new();
-    public static readonly List<CardSetModel> CardSets = new();
+    public static List<CardModel> Cards = new();
+    public static List<CardSetModel> CardSets = new();
 
     public static async void Init()
     {
@@ -38,8 +38,11 @@ public static class DataStorage
                 read.GetString("language")
             ));
         }
+        
+        Cards = Cards.OrderBy(a => a.CardNumber).ToList();
+        CardSets = CardSets.OrderBy(a => a.SetId).ToList();
     }
 
-    public static CardSetModel GetModel(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet && a.Languages.Any(b => b == model.Language));
-    public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).ToList();
+    public static CardSetModel GetModel(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
+    public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).OrderBy(a => a.CardNumber).ToList();
 }
