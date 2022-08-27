@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using DexOfCards.Framework.Data.Models;
@@ -12,8 +13,15 @@ public static class DataStorage
     public static List<CardModel> Cards = new();
     public static List<CardSetModel> CardSets = new();
 
-    public static async void Init()
+    public static void Init()
     {
+        InitCards();
+        InitSets();
+    }
+
+    public static async void InitCards()
+    {
+        Cards.Clear();
         await using var conn = SQLite.GetSql();
         var read = await conn.ExecuteReaderAsync("SELECT * FROM cards");
         while (await read.ReadAsync())
@@ -27,7 +35,14 @@ public static class DataStorage
             ));
         }
 
-        read = await conn.ExecuteReaderAsync("SELECT * FROM sets");
+        Cards.Sort((a, b) => string.Compare(a.CardSet, b.CardSet, StringComparison.Ordinal));
+    }
+
+    public static async void InitSets()
+    {
+        CardSets.Clear();
+        await using var conn = SQLite.GetSql();
+        var read = await conn.ExecuteReaderAsync("SELECT * FROM sets");
         while (await read.ReadAsync())
         {
             CardSets.Add(new CardSetModel(
@@ -38,9 +53,8 @@ public static class DataStorage
                 read.GetString("language")
             ));
         }
-        
-        Cards = Cards.OrderBy(a => a.CardNumber).ToList();
-        CardSets = CardSets.OrderBy(a => a.SetId).ToList();
+
+        CardSets.Sort((a, b) => string.Compare(a.SetId, b.SetId, StringComparison.Ordinal));
     }
 
     public static CardSetModel GetModel(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);

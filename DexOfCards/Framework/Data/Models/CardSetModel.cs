@@ -11,7 +11,7 @@ public class CardSetModel
         CardsInSet = cardAmount;
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         SubRegion = SetId.SubstringAfterLast('_');
-        SetImage = $"images/Sets/{(languages != "NonAsia" ? SetId.SubstringBeforeLast('_') + "/" : "/")}{image}";
+        SetImage = $"images/Sets/{(languages != "NonAsia" ? SetId.SubstringBeforeLast('_') + "/" : "")}{image}";
     }
 
     public string SetId { get; }
