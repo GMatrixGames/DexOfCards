@@ -18,8 +18,8 @@ public static class DataStorage
         while (await read.ReadAsync())
         {
             Cards.Add(new CardModel(
-                read.GetString("cardName"), 
-                read.GetString("cardSet"), 
+                read.GetString("cardName"),
+                read.GetString("cardSet"),
                 read.GetString("cardNumber"),
                 read.GetString("cardImage"),
                 read.GetString("language")
