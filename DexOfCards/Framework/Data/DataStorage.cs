@@ -57,6 +57,7 @@ public static class DataStorage
         CardSets.Sort((a, b) => string.Compare(a.SetId, b.SetId, StringComparison.Ordinal));
     }
 
-    public static CardSetModel GetModel(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
+    public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
+    public static CardSetModel GetSet(string model) => CardSets.FirstOrDefault(a => a.SetId == model);
     public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).OrderBy(a => a.CardNumber).ToList();
 }

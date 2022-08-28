@@ -4,7 +4,7 @@ namespace DexOfCards.Framework.Data.Models;
 
 public class CardSetModel
 {
-    public CardSetModel(string id, string name, string cardAmount, string image, string languages)
+    public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string languages = "???", string logo = "???")
     {
         SetId = id;
         SetName = name;
@@ -12,6 +12,7 @@ public class CardSetModel
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         SubRegion = SetId.SubstringAfterLast('_');
         SetImage = $"images/Sets/{(languages != "NonAsia" ? SetId.SubstringBeforeLast('_') + "/" : "")}{image}";
+        Logo = $"images/Logos/{SetName.Replace(" ", "")}.png";
     }
 
     public string SetId { get; }
@@ -20,6 +21,7 @@ public class CardSetModel
     public string SubRegion { get; }
     public string SetImage { get; }
     public string[] Languages { get; }
+    public string Logo { get; }
 
     public static string GetLanguageFromSubRegion(string subRegion)
     {

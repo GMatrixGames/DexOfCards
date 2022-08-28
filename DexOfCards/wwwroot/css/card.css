@@ -11,6 +11,12 @@
     position: relative;
 }
 
+.set {
+    margin: auto;
+    max-width: 300px;
+    position: relative;
+}
+
 .card {
     background-color: var(--b-bar-dark-background, #001529);
     color: white;
