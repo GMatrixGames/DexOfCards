@@ -12,7 +12,6 @@ public class CardSetModel
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         SubRegion = SetId.SubstringAfterLast('_');
         SetImage = $"images/Sets/{(languages != "NonAsia" ? SetId.SubstringBeforeLast('_') + "/" : "")}{image}";
-        Logo = $"images/Logos/{SetName.Replace(" ", "")}.png";
     }
 
     public string SetId { get; }
@@ -21,7 +20,6 @@ public class CardSetModel
     public string SubRegion { get; }
     public string SetImage { get; }
     public string[] Languages { get; }
-    public string Logo { get; }
 
     public static string GetLanguageFromSubRegion(string subRegion)
     {
