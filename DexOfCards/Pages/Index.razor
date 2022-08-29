@@ -1,47 +1,67 @@
 ﻿@page "/"
 @using DexOfCards.Framework.Data
 
-<main>
-    <div class="container center">
-        <div class="mt-3">
-            <div>
-                <div class="row gy-3">
-                    @foreach (var set in DataStorage.CardSets.Where(a => string.IsNullOrWhiteSpace(a.SubRegion)))
-                    {
-                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center corner-radial">
-                            <div class="set-logo shadow-sm">
-                                <div style="position: relative">
-                                    <div class="menu-more">
-                                        <a href="/set/@set.SetId">
-                                            <img class="img-fluid card corner-radial" src="@set.Logo" alt/>
+<main class="flex-shrink-0">
+    <div class="container px-4">
+        <div class="row gx-5 gy-3 d-flex align-items-stretch">
+            @if (DataStorage.CardSets.Where(a => string.IsNullOrWhiteSpace(a.SubRegion)).ToList() is { } sets)
+            {
+                <div class="col-12 col-lg-6">
+                    <div class="row gy-3">
+                        <div class="col-12 p-1">
+                            <h1 class="text-center fw-bold mb-3" style="color: white">Global Sets</h1>
+                            <div class="row gy-3 corner-radial" style="background-color: black">
+                                @foreach (var set in sets.Where(a => a.Languages.Contains("NonAsia")))
+                                {
+                                    <div class="col-12 col-sm-6">
+                                        <a class="d-block text-reset" href="/set/@set.SetId">
+                                            <div class="shadow-sm d-flex align-items-center set-logo">
+                                                <div class="text-center p-3 set-logo">
+                                                    <img class="img-fluid card corner-radial" src="@set.Logo" alt/>
+                                                </div>
+                                            </div>
                                         </a>
-                                        <div class="container" style="display: flex; align-items: center; justify-content: space-around; text-align: center; margin-top: 5px">
-                                            @if (DataStorage.GetRegionSets(set) is { Count: > 0 } data)
-                                            {
-                                                var count = data.Count;
-                                                
-                                                foreach (var (subsetLang, subset) in data)
-                                                {
-                                                    var size = count switch
-                                                    {
-                                                        2 => 35,
-                                                        3 => 30,
-                                                        _ => 50
-                                                    };
-
-                                                    <a href="/set/@subset.SetId" style="padding-right: 1px">
-                                                        <img class="img-fluid card corner-radial" src="images/icons/@(subsetLang).svg" style="max-height: @(size)px !important" alt/>
-                                                    </a>
-                                                }
-                                            }
-                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
-            </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="row gy-3">
+                        <div class="col-12 p-1">
+                            <h1 class="text-center fw-bold mb-3" style="color: white">Asia-based Sets</h1>
+                            <div class="row gy-3 corner-radial" style="background-color: black">
+                                @foreach (var set in sets.Where(a => !a.Languages.Contains("NonAsia")))
+                                {
+                                    <div class="col-12 col-sm-6">
+                                        <div class="d-block text-reset">
+                                            <div class="shadow-sm align-items-center">
+                                                <a href="/set/@set.SetId">
+                                                    <div class="text-center p-3 set-logo">
+                                                        <img class="img-fluid card corner-radial" src="@set.Logo" alt/>
+                                                    </div>
+                                                </a>
+                                                <div class="text-center set-logo">
+                                                    @foreach (var (subsetLang, subset) in DataStorage.GetRegionSets(set))
+                                                    {
+                                                        <div class="d-inline-block">
+                                                            <a href="/set/@subset.SetId">
+                                                                <img class="img-fluid card corner-radial" src="images/icons/@(subsetLang).svg" style="max-height: 35px !important; margin: 2px;" alt/>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </main>
