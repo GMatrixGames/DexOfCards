@@ -6,16 +6,35 @@
         <div class="mt-3">
             <div>
                 <div class="row gy-3">
-                    @foreach (var set in DataStorage.CardSets)
+                    @foreach (var set in DataStorage.CardSets.Where(a => string.IsNullOrWhiteSpace(a.SubRegion)))
                     {
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center corner-radial">
                             <div class="set-logo shadow-sm">
                                 <div style="position: relative">
                                     <div class="menu-more">
                                         <a href="/set/@set.SetId">
-                                            <img class="img-fluid card corner-radial" src="images/Logos/@(set.SetId + ".png")" alt/>
+                                            <img class="img-fluid card corner-radial" src="@set.Logo" alt/>
                                         </a>
-                                        <span>Test Text</span>
+                                        <div class="container" style="display: flex; align-items: center; justify-content: space-around; text-align: center; margin-top: 5px">
+                                            @if (DataStorage.GetRegionSets(set) is { Count: > 0 } data)
+                                            {
+                                                var count = data.Count;
+                                                
+                                                foreach (var (subsetLang, subset) in data)
+                                                {
+                                                    var size = count switch
+                                                    {
+                                                        2 => 35,
+                                                        3 => 30,
+                                                        _ => 50
+                                                    };
+
+                                                    <a href="/set/@subset.SetId" style="padding-right: 1px">
+                                                        <img class="img-fluid card corner-radial" src="images/icons/@(subsetLang).svg" style="max-height: @(size)px !important" alt/>
+                                                    </a>
+                                                }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

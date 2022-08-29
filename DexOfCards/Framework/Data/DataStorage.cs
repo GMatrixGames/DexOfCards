@@ -59,5 +59,24 @@ public static class DataStorage
 
     public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
     public static CardSetModel GetSet(string model) => CardSets.FirstOrDefault(a => a.SetId == model);
+    public static Dictionary<string, CardSetModel> GetRegionSets(CardSetModel orig)
+    {
+        // Lang, Model
+        var ret = new Dictionary<string, CardSetModel>();
+
+        foreach (var set in CardSets)
+        {
+            if (!string.IsNullOrWhiteSpace(set.SubRegion) && set.SetId.SubstringBefore('_') == orig.SetId)
+            {
+                ret.Add(CardSetModel.GetLanguageFromSubRegion(set.SubRegion), set);
+            }
+            else if (set.SetId.SubstringBefore('_') == orig.SetId && orig.Languages.Contains("KO"))
+            {
+                ret.Add("KO", orig);
+            }
+        }
+
+        return ret;
+    }
     public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).OrderBy(a => a.CardNumber).ToList();
 }
