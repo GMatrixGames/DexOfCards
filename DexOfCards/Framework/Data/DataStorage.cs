@@ -34,8 +34,6 @@ public static class DataStorage
                 read.GetString("language")
             ));
         }
-
-        Cards.Sort((a, b) => string.Compare(a.CardSet, b.CardSet, StringComparison.Ordinal));
     }
 
     public static async void InitSets()
@@ -50,11 +48,12 @@ public static class DataStorage
                 read.GetString("setname"),
                 read.GetString("cardsInSet"),
                 read.GetString("setImage"),
-                read.GetString("language")
+                read.GetString("language"),
+                DateTime.Parse(read.GetString("releaseDate"))
             ));
         }
 
-        CardSets.Sort((a, b) => string.Compare(a.SetId, b.SetId, StringComparison.Ordinal));
+        CardSets = CardSets.OrderByDescending(a => a.ReleaseDate).ToList();
     }
 
     public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
@@ -78,5 +77,21 @@ public static class DataStorage
 
         return ret;
     }
-    public static List<CardModel> GetCards(CardSetModel model) => Cards.Where(a => a.CardSet == model.SetId).OrderBy(a => a.CardNumber).ToList();
+    public static List<CardModel> GetCards(CardSetModel model)
+    {
+        var allCards = Cards.Where(a => a.CardSet == model.SetId).ToList();
+        var allNormal = allCards.Where(a => int.TryParse(a.CardNumber, out _));
+        var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber, out _));
+
+        allNormal = allNormal.OrderBy(a => int.Parse(a.CardNumber));
+        allExtra = allExtra.OrderBy(a => int.Parse(a.CardNumber
+            .Replace("SV", "")
+            .Replace("TG", "")
+            .Replace("RC", "")
+            .Replace("SWSH", "")));
+        
+        var cards = allNormal.ToList();
+        cards.AddRange(allExtra);
+        return cards;
+    }
 }

@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DexOfCards.Utilities;
 
 namespace DexOfCards.Framework.Data.Models;
 
 public class CardSetModel
 {
-    public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string languages = "???")
+    public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string languages = "???", DateTime? releaseDate = default)
     {
         SetId = id;
         SetName = name;
@@ -13,6 +14,7 @@ public class CardSetModel
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         SubRegion = SetId.Contains('_') ? SetId.SubstringAfterLast('_') : null;
         SetImage = $"images/Sets/{(languages != "NonAsia" ? string.IsNullOrWhiteSpace(SubRegion) ? SetId + "/" : SubRegion + "/" : "")}{image}";
+        ReleaseDate = releaseDate ?? DateTime.Now;
     }
 
     public string SetId { get; }
@@ -21,7 +23,8 @@ public class CardSetModel
     public string SubRegion { get; }
     public string SetImage { get; }
     public string[] Languages { get; }
-
+    public DateTime ReleaseDate { get; }
+    
     public string Logo
     {
         get
