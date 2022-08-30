@@ -9,10 +9,10 @@ public class CardSetModel
     public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string languages = "???", DateTime? releaseDate = default)
     {
         SetId = id;
-        SetName = name;
+        SubRegion = SetId.Contains('_') ? SetId.SubstringAfterLast('_') : null;
+        SetName = name + (!string.IsNullOrWhiteSpace(SubRegion) ? $" ({GetLanguageFromSubRegion(SubRegion)})" : string.Empty);
         CardsInSet = cardAmount;
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
-        SubRegion = SetId.Contains('_') ? SetId.SubstringAfterLast('_') : null;
         SetImage = $"images/Sets/{(languages != "NonAsia" ? string.IsNullOrWhiteSpace(SubRegion) ? SetId + "/" : SubRegion + "/" : "")}{image}";
         ReleaseDate = releaseDate ?? DateTime.Now;
     }
@@ -42,6 +42,8 @@ public class CardSetModel
             "F" => "CN",
             "I" => "ID",
             "T" => "TH",
+            // Custom
+            "K" => "KO",
             _ => default
         };
     }
@@ -52,7 +54,9 @@ public class CardSetModel
         {
             "CN" => "F",
             "ID" => "I",
-            "T" => "TH",
+            "TH" => "T",
+            // Custom
+            "KO" => "K",
             _ => default
         };
     }
