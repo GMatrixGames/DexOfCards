@@ -23,7 +23,7 @@
                                 <div class="pokemon-card shadow-sm">
                                     <div style="position: relative">
                                         <div>
-                                            <a @onclick="() => OnClick(card)">
+                                            <a @onclick="() => OnClick(card)" style="cursor: pointer">
                                                 <img class="img-fluid card corner-radial" src="@card.CardImage" alt/>
                                             </a>
                                         </div>
@@ -36,39 +36,39 @@
             </div>
         </div>
     </main>
-}
 
-<Modal @ref="_modal" Animated="true" AnimationDuration="150" RenderMode="ModalRenderMode.LazyLoad" Class="">
-    <ModalContent Size="ModalSize.ExtraLarge" Centered>
-        <ModalHeader>
-            <ModalTitle>@_clickedCard.CardName</ModalTitle>
-            <CloseButton Style="margin-right: 1em"/>
-        </ModalHeader>
-        <ModalBody>
+    <Modal @ref="_modal" Animated="true" AnimationDuration="150" RenderMode="ModalRenderMode.LazyLoad" Class="">
+        <ModalContent Size="ModalSize.ExtraLarge" Centered>
+            <ModalHeader>
+                <ModalTitle>@_clickedCard.CardName @($"{_clickedCard.CardNumber}/{CardSet.CardsInSet}")</ModalTitle>
+                <CloseButton Style="margin-right: 1em"/>
+            </ModalHeader>
             <ModalBody>
-                <div class="container-fluid">
-                    <div class="row d-flex align-items-center justify-content-center">
-                        <div class="col-5 pokemon-card-large">
-                            <div class="text-center">
-                                <img src="@_clickedCard.CardImage" class="img-fluid corner-radial" alt/>
+                <ModalBody>
+                    <div class="container-fluid">
+                        <div class="row d-flex align-items-center justify-content-center">
+                            <div class="col-5 pokemon-card-large">
+                                <div class="text-center">
+                                    <img src="@_clickedCard.CardImage" class="img-fluid corner-radial" alt/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-7">
-                            <div class="card">
-                                <div class="card-body p-0 p-md-3">
-                                    Test
+                            <div class="col-7">
+                                <div class="card">
+                                    <div class="card-body p-0 p-md-3">
+                                        Test
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </ModalBody>
             </ModalBody>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@Save">Save</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@Save">Save</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}
 
 @code {
     private CardModel _clickedCard { get; set; }
