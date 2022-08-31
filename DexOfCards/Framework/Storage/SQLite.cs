@@ -10,7 +10,7 @@ public static class SQLite
 {
     private static SqliteConnection _connection;
 
-    public static SqliteConnection GetSql()
+    public static SqliteConnection GetStorageSql()
     {
         if (_connection is { State: ConnectionState.Open }) return _connection;
         _connection = new SqliteConnection(@$"Data Source={Path.Combine(FilePaths.Resources, "storage.s3db")};");

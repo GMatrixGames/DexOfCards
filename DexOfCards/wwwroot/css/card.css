@@ -11,10 +11,23 @@
     position: relative;
 }
 
+.pokemon-card-large {
+    background: var(--b-bar-dark-background, #001529);
+    border-radius: 15px;
+    margin: auto;
+    width: 300px;
+    position: relative;
+}
+
 .set {
     margin: auto;
     max-width: 300px;
     position: relative;
+}
+
+.modal-content {
+    background: var(--b-bar-dark-background, #001529);
+    color: white
 }
 
 .set-logo {

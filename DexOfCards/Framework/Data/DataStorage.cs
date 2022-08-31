@@ -22,7 +22,7 @@ public static class DataStorage
     public static async void InitCards()
     {
         Cards.Clear();
-        await using var conn = SQLite.GetSql();
+        await using var conn = SQLite.GetStorageSql();
         var read = await conn.ExecuteReaderAsync("SELECT * FROM cards");
         while (await read.ReadAsync())
         {
@@ -39,7 +39,7 @@ public static class DataStorage
     public static async void InitSets()
     {
         CardSets.Clear();
-        await using var conn = SQLite.GetSql();
+        await using var conn = SQLite.GetStorageSql();
         var read = await conn.ExecuteReaderAsync("SELECT * FROM sets");
         while (await read.ReadAsync())
         {

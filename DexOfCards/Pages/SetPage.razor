@@ -1,6 +1,6 @@
 @page "/set/{setId}"
-
 @using DexOfCards.Framework.Data
+@using DexOfCards.Framework.Data.Models
 
 @if (DataStorage.GetSet(SetId) is { } CardSet)
 {
@@ -22,8 +22,10 @@
                             <div class="col-6 col-sm-4 col-md-3 col-lg-2 corner-radial text-center">
                                 <div class="pokemon-card shadow-sm">
                                     <div style="position: relative">
-                                        <div class="menu-more">
-                                            <img class="img-fluid card corner-radial" src="@card.CardImage" alt/>
+                                        <div>
+                                            <a @onclick="() => OnClick(card)">
+                                                <img class="img-fluid card corner-radial" src="@card.CardImage" alt/>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -36,6 +38,52 @@
     </main>
 }
 
+<Modal @ref="_modal" Animated="true" AnimationDuration="150" RenderMode="ModalRenderMode.LazyLoad" Class="">
+    <ModalContent Size="ModalSize.ExtraLarge" Centered>
+        <ModalHeader>
+            <ModalTitle>@_clickedCard.CardName</ModalTitle>
+            <CloseButton Style="margin-right: 1em"/>
+        </ModalHeader>
+        <ModalBody>
+            <ModalBody>
+                <div class="container-fluid">
+                    <div class="row d-flex align-items-center justify-content-center">
+                        <div class="col-5 pokemon-card-large">
+                            <div class="text-center">
+                                <img src="@_clickedCard.CardImage" class="img-fluid corner-radial" alt/>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="card">
+                                <div class="card-body p-0 p-md-3">
+                                    Test
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ModalBody>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@Save">Save</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
+    private CardModel _clickedCard { get; set; }
+    private Modal _modal { get; set; }
     [Parameter] public string SetId { get; set; }
+
+    private void OnClick(CardModel model)
+    {
+        _clickedCard = model;
+
+        _modal.Show();
+    }
+
+    private void Save()
+    {
+        _modal.Hide();
+    }
 }
