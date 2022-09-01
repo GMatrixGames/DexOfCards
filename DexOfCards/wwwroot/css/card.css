@@ -3,6 +3,11 @@
     border-color: white;
 }
 
+.corner-radial-less {
+    border-radius: 13px !important;
+    border-color: white;
+}
+
 .pokemon-card {
     background-color: #36373a;
     border-radius: 15px;
@@ -15,7 +20,7 @@
     background: var(--b-bar-dark-background, #001529);
     border-radius: 15px;
     margin: auto;
-    width: 300px;
+    max-width: 275px;
     position: relative;
 }
 

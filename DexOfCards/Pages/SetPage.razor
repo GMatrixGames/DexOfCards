@@ -4,12 +4,8 @@
 
 @if (DataStorage.GetSet(SetId) is { } CardSet)
 {
-    <div align="center">
-        <h1>@CardSet.SetName</h1>
-        <br/>
+    <div style="text-align: center; margin: 5em 0 1em 0">
         <img src="@CardSet.Logo" alt/>
-        <br/>
-        <h3>@SetId</h3>
     </div>
 
     <main style="margin-bottom: 2em">
@@ -22,11 +18,9 @@
                             <div class="col-6 col-sm-4 col-md-3 col-lg-2 corner-radial text-center">
                                 <div class="pokemon-card shadow-sm">
                                     <div style="position: relative">
-                                        <div>
-                                            <a @onclick="() => OnClick(card)" style="cursor: pointer">
-                                                <img class="img-fluid card corner-radial" src="@card.CardImage" alt/>
-                                            </a>
-                                        </div>
+                                        <a @onclick="() => OnClick(card)" style="cursor: pointer">
+                                            <img class="img-fluid card corner-radial" src="@card.CardImage" alt/>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +34,7 @@
     <Modal @ref="_modal" Animated="true" AnimationDuration="150" RenderMode="ModalRenderMode.LazyLoad" Class="">
         <ModalContent Size="ModalSize.ExtraLarge" Centered>
             <ModalHeader>
-                <ModalTitle>@_clickedCard.CardName @($"{_clickedCard.CardNumber}/{CardSet.CardsInSet}")</ModalTitle>
+                <ModalTitle>Card Information</ModalTitle>
                 <CloseButton Style="margin-right: 1em"/>
             </ModalHeader>
             <ModalBody>
@@ -55,7 +49,24 @@
                             <div class="col-7">
                                 <div class="card">
                                     <div class="card-body p-0 p-md-3">
-                                        Test
+                                        <Table TextColor="TextColor.White">
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableRowHeader>Name</TableRowHeader>
+                                                    <TableRowCell>@_clickedCard.CardName</TableRowCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableRowHeader>Card Number</TableRowHeader>
+                                                    <TableRowCell>@(!CardSet.CardsInSet.Contains('?') && int.TryParse(_clickedCard.CardNumber, out _) ? $"{_clickedCard.CardNumber}/{CardSet.CardsInSet}" : _clickedCard.CardNumber)</TableRowCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableRowHeader>Set</TableRowHeader>
+                                                    <TableRowCell>
+                                                        <img src="@CardSet.SetImage" width="@(CardSet.IsAsia ? "30" : "20")" alt> @CardSet.SetName
+                                                    </TableRowCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
                                     </div>
                                 </div>
                             </div>
