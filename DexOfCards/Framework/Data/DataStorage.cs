@@ -10,8 +10,8 @@ namespace DexOfCards.Framework.Data;
 
 public static class DataStorage
 {
-    public static List<CardModel> Cards = new();
-    public static List<CardSetModel> CardSets = new();
+    private static readonly List<CardModel> Cards = new();
+    private static readonly List<CardSetModel> CardSets = new();
 
     public static void Init()
     {
@@ -52,10 +52,9 @@ public static class DataStorage
                 DateTime.Parse(read.GetString("releaseDate"))
             ));
         }
-
-        CardSets = CardSets.OrderByDescending(a => a.ReleaseDate).ToList();
     }
 
+    public static List<CardSetModel> GetAllSets() => CardSets.OrderByDescending(a => a.ReleaseDate).ToList();
     public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
     public static CardSetModel GetSet(string model) => CardSets.FirstOrDefault(a => a.SetId == model);
     public static Dictionary<string, CardSetModel> GetRegionSets(CardSetModel orig)
@@ -77,9 +76,11 @@ public static class DataStorage
 
         return ret;
     }
+    public static List<CardModel> GetAllCards() => Cards;
+    public static List<CardModel> GetCards(string set) => GetCards(GetSet(set));
     public static List<CardModel> GetCards(CardSetModel model)
     {
-        var allCards = Cards.Where(a => a.CardSet == model.SetId).ToList();
+        var allCards = GetAllCards().Where(a => a.CardSet == model.SetId).ToList();
         var allNormal = allCards.Where(a => int.TryParse(a.CardNumber, out _));
         var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber, out _));
 
@@ -89,7 +90,7 @@ public static class DataStorage
             .Replace("TG", "")
             .Replace("RC", "")
             .Replace("SWSH", "")));
-        
+
         var cards = allNormal.ToList();
         cards.AddRange(allExtra);
         return cards;

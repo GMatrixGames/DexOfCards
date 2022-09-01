@@ -1,8 +1,10 @@
-﻿using Blazorise;
+﻿using System.IO;
+using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using DexOfCards.Framework.Data;
+using DexOfCards.Utilities;
 using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +32,9 @@ public partial class MainWindow
         InitializeComponent();
 
         DataStorage.Init();
+        
+        if (File.Exists(Path.Combine(FilePaths.AppData, "user_store.s3db"))) return;
+        File.Copy(Path.Combine(FilePaths.Resources, "DEFAULT-user_storage.s3db"), Path.Combine(FilePaths.AppData, "user_store.s3db"));
     }
 
     private void BlazorWebViewInitialized(object sender, BlazorWebViewInitializedEventArgs e)
