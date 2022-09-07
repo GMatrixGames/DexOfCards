@@ -26,13 +26,35 @@ public static class DataStorage
         var read = await conn.ExecuteReaderAsync("SELECT * FROM cards");
         while (await read.ReadAsync())
         {
-            Cards.Add(new CardModel(
-                read.GetString("cardName"),
-                read.GetString("cardSet"),
-                read.GetString("cardNumber"),
-                read.GetString("cardImage"),
-                read.GetString("language")
-            ));
+            var name = read.GetString("cardName");
+            var set = read.GetString("cardSet");
+            var number = read.GetString("cardNumber");
+            var cardStyle = read.GetString("style");
+            var image = read.GetString("cardImage");
+            var language = read.GetString("language");
+
+            // Since styles are separate entries, we need to add the styles to the card as well as image to add to the carousel
+            if (Cards.Any(a => a.CardName == name && a.CardNumber == number && a.CardSet == set && a.Language == language && !a.Styles.ContainsKey(cardStyle)))
+            {
+                var card = Cards.Find(a => a.CardName == name && a.CardNumber == number && !a.Styles.ContainsKey(cardStyle));
+                if (card != null)
+                {
+                    Cards.Remove(card);
+                    card.AddToStyles(cardStyle, image);
+                    Cards.Add(card);
+                }
+            }
+            else
+            {
+                Cards.Add(new CardModel(
+                    read.GetString("cardName"),
+                    read.GetString("cardSet"),
+                    read.GetString("cardNumber"),
+                    read.GetString("cardImage"),
+                    read.GetString("language"),
+                    read.GetString("style")
+                ));
+            }
         }
     }
 
@@ -81,15 +103,16 @@ public static class DataStorage
     public static List<CardModel> GetCards(CardSetModel model)
     {
         var allCards = GetAllCards().Where(a => a.CardSet == model.SetId).ToList();
-        var allNormal = allCards.Where(a => int.TryParse(a.CardNumber, out _));
-        var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber, out _));
-
-        allNormal = allNormal.OrderBy(a => int.Parse(a.CardNumber));
-        allExtra = allExtra.OrderBy(a => int.Parse(a.CardNumber
-            .Replace("SV", "")
-            .Replace("TG", "")
-            .Replace("RC", "")
-            .Replace("SWSH", "")));
+        var allNormal = allCards
+            .Where(a => int.TryParse(a.CardNumber, out _))
+            .OrderBy(a => int.Parse(a.CardNumber));
+        var allExtra = allCards
+            .Where(a => !int.TryParse(a.CardNumber, out _))
+            .OrderBy(a => int.Parse(a.CardNumber
+                .Replace("SV", "")
+                .Replace("TG", "")
+                .Replace("RC", "")
+                .Replace("SWSH", "")));
 
         var cards = allNormal.ToList();
         cards.AddRange(allExtra);

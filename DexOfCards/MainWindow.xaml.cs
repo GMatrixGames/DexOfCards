@@ -32,8 +32,9 @@ public partial class MainWindow
         InitializeComponent();
 
         DataStorage.Init();
-        
+
         if (File.Exists(Path.Combine(FilePaths.AppData, "user_store.s3db"))) return;
+        if (!Directory.Exists(FilePaths.AppData)) Directory.CreateDirectory(FilePaths.AppData);
         File.Copy(Path.Combine(FilePaths.Resources, "DEFAULT-user_storage.s3db"), Path.Combine(FilePaths.AppData, "user_store.s3db"));
     }
 
