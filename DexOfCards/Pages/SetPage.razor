@@ -73,6 +73,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-5 justify-content-center">
+                            <div class="col-md-6">
+                                <div class="card" style="background-color: #36373a">
+                                    <h6 class="card-header">
+                                        Card Collection
+                                    </h6>
+                                    <div class="card-body">
+                                        <form>
+                                            <div style="width: 49%; display: inline-block; vertical-align: top; float: left">
+                                                <div class="form-group">
+                                                    <label for="number">Amount</label>
+                                                    <input type="number" class="form-control" id="number" placeholder="0" autocomplete="off" @bind="_cardAmount"/>
+                                                </div>
+                                            </div>
+                                            <div style="width: 49%; display: inline-block; vertical-align: top; float: right">
+                                                <label for="style">Variant</label>
+                                                <Select TValue="string" id="style" @bind-SelectedValue="_cardStyle">
+                                                    @foreach (var style in _clickedCard.Styles)
+                                                    {
+                                                        <SelectItem Value="@style">@style</SelectItem>
+                                                    }
+                                                </Select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </ModalBody>
             </ModalBody>
@@ -87,6 +115,9 @@
     private CardModel _clickedCard { get; set; }
     private Modal _modal { get; set; }
     [Parameter] public string SetId { get; set; }
+
+    private int _cardAmount { get; set; }
+    private string _cardStyle { get; set; }
 
     private void OnClick(CardModel model)
     {

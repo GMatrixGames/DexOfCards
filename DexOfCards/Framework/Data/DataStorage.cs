@@ -99,4 +99,15 @@ public static class DataStorage
         cards.AddRange(allExtra);
         return cards;
     }
+    public static List<string> GetKnownStyles()
+    {
+        var ret = new List<string>();
+
+        foreach (var style in Cards.SelectMany(card => card.Styles.Where(style => !ret.Contains(style))))
+        {
+            ret.Add(style);
+        }
+
+        return ret;
+    }
 }

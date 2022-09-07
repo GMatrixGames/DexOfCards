@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DexOfCards.Framework.Data.Models;
 
@@ -12,7 +13,11 @@ public class CardModel
         Image = image;
         Language = language;
         Styles.Add("Default");
-        Styles.AddRange(styles);
+
+        foreach (var style in styles.Where(style => !string.IsNullOrWhiteSpace(style)))
+        {
+            Styles.Add(style);
+        }
     }
 
     public string CardName { get; }
