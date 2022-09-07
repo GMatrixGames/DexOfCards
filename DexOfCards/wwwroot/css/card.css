@@ -1,5 +1,5 @@
 ﻿.corner-radial {
-    border-radius: 15px !important;
+    border-radius: 12px !important;
     border-color: white;
 }
 
@@ -10,7 +10,8 @@
 
 .pokemon-card {
     background-color: #36373a;
-    border-radius: 15px;
+    border-radius: 10px !important;
+    border-color: transparent;
     margin: auto;
     max-width: 200px;
     position: relative;

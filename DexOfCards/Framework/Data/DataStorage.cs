@@ -71,7 +71,7 @@ public static class DataStorage
                 read.GetString("cardsInSet"),
                 read.GetString("setImage"),
                 read.GetString("language"),
-                DateTime.Parse(read.GetString("releaseDate"))
+                DateTimeOffset.FromUnixTimeMilliseconds(read.GetInt64("releaseDate")).Date
             ));
         }
     }
@@ -112,6 +112,7 @@ public static class DataStorage
                 .Replace("SV", "")
                 .Replace("TG", "")
                 .Replace("RC", "")
+                .Replace("CC", "")
                 .Replace("SWSH", "")));
 
         var cards = allNormal.ToList();
