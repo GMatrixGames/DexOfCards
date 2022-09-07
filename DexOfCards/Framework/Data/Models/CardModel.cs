@@ -4,14 +4,15 @@ namespace DexOfCards.Framework.Data.Models;
 
 public class CardModel
 {
-    public CardModel(string name, string set, string number, string image, string language, string style)
+    public CardModel(string name, string set, string number, string image, string language, IEnumerable<string> styles)
     {
         CardName = name;
         CardSet = set;
         CardNumber = number;
         Image = image;
         Language = language;
-        Styles.Add(string.IsNullOrWhiteSpace(style) ? "Default" : style, CardImage);
+        Styles.Add("Default");
+        Styles.AddRange(styles);
     }
 
     public string CardName { get; }
@@ -19,12 +20,7 @@ public class CardModel
     public string CardNumber { get; }
     private string Image { get; }
     public string Language { get; }
-    public Dictionary<string, string> Styles { get; } = new();
+    public List<string> Styles { get; } = new();
 
     public string CardImage => $"images/Cards/{CardSet}/{Image}";
-
-    public void AddToStyles(string styleName, string imageUrl)
-    {
-        Styles.Add(styleName, $"images/Cards/{CardSet}/{imageUrl}");
-    }
 }

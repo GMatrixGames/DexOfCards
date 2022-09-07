@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.Json;
 using DexOfCards.Framework.Data.Models;
 using DexOfCards.Framework.Storage;
 using DexOfCards.Utilities;
@@ -26,35 +27,14 @@ public static class DataStorage
         var read = await conn.ExecuteReaderAsync("SELECT * FROM cards");
         while (await read.ReadAsync())
         {
-            var name = read.GetString("cardName");
-            var set = read.GetString("cardSet");
-            var number = read.GetString("cardNumber");
-            var cardStyle = read.GetString("style");
-            var image = read.GetString("cardImage");
-            var language = read.GetString("language");
-
-            // Since styles are separate entries, we need to add the styles to the card as well as image to add to the carousel
-            if (Cards.Any(a => a.CardName == name && a.CardNumber == number && a.CardSet == set && a.Language == language && !a.Styles.ContainsKey(cardStyle)))
-            {
-                var card = Cards.Find(a => a.CardName == name && a.CardNumber == number && !a.Styles.ContainsKey(cardStyle));
-                if (card != null)
-                {
-                    Cards.Remove(card);
-                    card.AddToStyles(cardStyle, image);
-                    Cards.Add(card);
-                }
-            }
-            else
-            {
-                Cards.Add(new CardModel(
-                    read.GetString("cardName"),
-                    read.GetString("cardSet"),
-                    read.GetString("cardNumber"),
-                    read.GetString("cardImage"),
-                    read.GetString("language"),
-                    read.GetString("style")
-                ));
-            }
+            Cards.Add(new CardModel(
+                read.GetString("cardName"),
+                read.GetString("cardSet"),
+                read.GetString("cardNumber"),
+                read.GetString("cardImage"),
+                read.GetString("language"),
+                JsonSerializer.Deserialize<string[]>(read.GetString("styles"))
+            ));
         }
     }
 
