@@ -93,6 +93,9 @@ public static class DataStorage
                 .Replace("TG", "")
                 .Replace("RC", "")
                 .Replace("CC", "")
+                .Replace("BW", "")
+                .Replace("XY", "")
+                .Replace("SM", "")
                 .Replace("SWSH", "")));
 
         var cards = allNormal.ToList();
