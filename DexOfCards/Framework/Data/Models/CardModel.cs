@@ -28,4 +28,7 @@ public class CardModel
     public List<string> Styles { get; } = new();
 
     public string CardImage => $"images/Cards/{CardSet}/{Image}";
+
+    public bool IsEnergy => CardNumber
+        is "PSY" or "DAR" or "FIG" or "FIR" or "GRA" or "LIG" or "MET" or "WAT";
 }

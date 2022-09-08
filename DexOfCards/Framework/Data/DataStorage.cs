@@ -86,8 +86,9 @@ public static class DataStorage
         var allNormal = allCards
             .Where(a => int.TryParse(a.CardNumber, out _))
             .OrderBy(a => int.Parse(a.CardNumber));
-        var allExtra = allCards
-            .Where(a => !int.TryParse(a.CardNumber, out _))
+        var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber, out _)).ToList();
+        var allEnergyNoNumber = allExtra.Where(a => a.IsEnergy);
+        allExtra = allExtra.Where(a => !a.IsEnergy)
             .OrderBy(a => int.Parse(a.CardNumber
                 .Replace("SV", "")
                 .Replace("TG", "")
@@ -96,10 +97,11 @@ public static class DataStorage
                 .Replace("BW", "")
                 .Replace("XY", "")
                 .Replace("SM", "")
-                .Replace("SWSH", "")));
+                .Replace("SWSH", ""))).ToList();
 
         var cards = allNormal.ToList();
         cards.AddRange(allExtra);
+        cards.AddRange(allEnergyNoNumber);
         return cards;
     }
     public static List<string> GetKnownStyles()
