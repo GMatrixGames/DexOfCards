@@ -10,11 +10,12 @@ public class CardSetModel
     {
         SetId = id;
         SubRegion = SetId.Contains('_') ? SetId.SubstringAfterLast('_') : null;
-        SetName = name + (!string.IsNullOrWhiteSpace(SubRegion) ? $" ({GetLanguageFromSubRegion(SubRegion)})" : string.Empty);
+        SetName = name + (!string.IsNullOrWhiteSpace(SubRegion) ? $" ({GetLanguageFromSubRegion(SubRegion)})" : languages.Contains("JP") ? " (JP)" : string.Empty);
         CardsInSet = cardAmount;
         Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
         IsAsia = !languages.Contains("NonAsia");
-        SetImage = $"images/Sets/{(IsAsia ? SetId.SubstringBeforeLast('_') + '/' : "")}{image}";
+        if (IsAsia) SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{SetId.SubstringBeforeLast('_')}/{image}";
+        else SetImage = $"images/Sets/{image}";
         ReleaseDate = releaseDate ?? DateTime.Now;
     }
 
@@ -26,7 +27,7 @@ public class CardSetModel
     public string[] Languages { get; }
     public DateTime ReleaseDate { get; }
     public bool IsAsia { get; }
-    
+
     public string Logo
     {
         get
