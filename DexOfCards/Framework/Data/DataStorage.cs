@@ -106,7 +106,7 @@ public static class DataStorage
     {
         var ret = new List<string>();
 
-        foreach (var style in Cards.SelectMany(card => card.Styles.Where(style => !ret.Contains(style))))
+        foreach (var style in Cards.SelectMany(card => card.Styles.Where(style => !ret.Contains(style) && style != "Default")))
         {
             ret.Add(style);
         }
