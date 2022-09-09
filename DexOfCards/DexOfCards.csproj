@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazorise.Bootstrap5" Version="1.0.6" />
+    <PackageReference Include="Blazorise.Components" Version="1.0.6" />
     <PackageReference Include="Blazorise.Icons.Bootstrap" Version="1.0.6" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="6.0.486" />
