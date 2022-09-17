@@ -4,8 +4,27 @@
 
 @if (DataStorage.GetSet(SetId) is { } CardSet)
 {
-    <div style="text-align: center; margin: 5em 0 1em 0">
-        <img src="@CardSet.Logo" alt/>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div style="max-width: 50%">
+                <div style="text-align: center; margin: 1em 0 1em 0">
+                    <div class="card" style="background-color: #36373a">
+                        <div class="card-body">
+                            <div>
+                                <img src="@CardSet.Logo" alt/>
+                                <p style="font-size: 1.5em">
+                                    <img style="display: inline" src="@CardSet.SetImage" width="@(CardSet.IsAsia ? "40" : "30")" alt>
+                                    @CardSet.SetName
+                                </p>
+                                <p style="font-size: 1.2em">
+                                    @CardSet.CardsInSet cards in the set
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <main style="margin-bottom: 2em">
