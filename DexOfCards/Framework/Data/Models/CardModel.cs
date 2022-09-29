@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DexOfCards.Framework.Data.Models;
@@ -8,10 +9,10 @@ public class CardModel
     public CardModel(string name, string set, string number, string image, string language, IEnumerable<string> styles)
     {
         CardName = name;
-        CardSet = DataStorage.GetSet(set);
+        Language = Enum.Parse<CardLanguage>(language);
+        CardSet = DataStorage.GetSet(set, Language);
         CardNumber = number;
         Image = image;
-        Language = language;
         Styles.Add("Default");
 
         foreach (var style in styles.Where(style => !string.IsNullOrWhiteSpace(style)))
@@ -24,7 +25,7 @@ public class CardModel
     public CardSetModel CardSet { get; }
     public string CardNumber { get; }
     private string Image { get; }
-    public string Language { get; }
+    public CardLanguage Language { get; }
     public List<string> Styles { get; } = new();
 
     public string CardImage => $"images/Cards/{CardSet.Language}/{CardSet.SetId}/{Image}";
