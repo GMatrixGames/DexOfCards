@@ -78,7 +78,7 @@
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableRowHeader>Card Number</TableRowHeader>
-                                                    <TableRowCell>@(!CardSet.CardsInSet.Contains('?') && int.TryParse(_clickedCard.CardNumber, out _) ? $"{_clickedCard.CardNumber}/{CardSet.CardsInSet}" : _clickedCard.CardNumber)</TableRowCell>
+                                                    <TableRowCell>@(!CardSet.CardsInSet.Contains('?') && int.TryParse(_clickedCard.CardNumber.Replace("a", ""), out _) ? $"{_clickedCard.CardNumber}/{CardSet.CardsInSet}" : _clickedCard.CardNumber)</TableRowCell>
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableRowHeader>Set</TableRowHeader>

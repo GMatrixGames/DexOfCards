@@ -6,16 +6,15 @@ namespace DexOfCards.Framework.Data.Models;
 
 public class CardSetModel
 {
-    public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string languages = "???", DateTime? releaseDate = default)
+    public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string language = "???", DateTime? releaseDate = default)
     {
         SetId = id;
         SubRegion = SetId.Contains('_') ? SetId.SubstringAfterLast('_') : null;
-        SetName = name + (!string.IsNullOrWhiteSpace(SubRegion) ? $" ({GetLanguageFromSubRegion(SubRegion)})" : languages.Contains("JP") ? " (JP)" : string.Empty);
+        SetName = name + (!string.IsNullOrWhiteSpace(SubRegion) ? $" ({GetLanguageFromSubRegion(SubRegion)})" : language == "JP" ? " (JP)" : string.Empty);
         CardsInSet = cardAmount;
-        Languages = languages.Contains(',') ? languages.Split(',') : new[] { languages };
-        IsAsia = !languages.Contains("NonAsia");
-        if (IsAsia) SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{SetId.SubstringBeforeLast('_')}/{image}";
-        else SetImage = $"images/Sets/{image}";
+        Language = language;
+        IsAsia = language == "NonAsia";
+        SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{language}/{image}";
         ReleaseDate = releaseDate ?? DateTime.Now;
     }
 
@@ -24,7 +23,7 @@ public class CardSetModel
     public string CardsInSet { get; }
     public string SubRegion { get; }
     public string SetImage { get; }
-    public string[] Languages { get; }
+    public string Language { get; }
     public DateTime ReleaseDate { get; }
     public bool IsAsia { get; }
 
@@ -32,34 +31,34 @@ public class CardSetModel
     {
         get
         {
-            var path = Path.Combine(FilePaths.WwwRoot, $"images\\Logos\\{SetId}.png");
-            if (!File.Exists(path)) path = $"images/Logos/{SetId.SubstringBeforeLast('_')}.png"; // Return base image if region doesn't have one
+            var path = Path.Combine(FilePaths.WwwRoot, $"images\\Logos\\{Language}\\{SetId}.png");
+            if (!File.Exists(path)) path = $"images/Logos/{Language}/{SetId.SubstringBeforeLast('_')}.png"; // Return base image if region doesn't have one
             return path.SubstringAfter(FilePaths.WwwRoot);
         }
     }
 
-    public static string GetLanguageFromSubRegion(string subRegion)
+    public static CardLanguage GetLanguageFromSubRegion(string subRegion)
     {
         return subRegion switch
         {
-            "F" => "CN",
-            "I" => "ID",
-            "T" => "TH",
-            // Custom
-            "K" => "KO",
+            "C" => CardLanguage.SCN,
+            "F" => CardLanguage.TCN,
+            "I" => CardLanguage.ID,
+            "T" => CardLanguage.TH,
+            "K" => CardLanguage.KO,
             _ => default
         };
     }
 
-    public static string GetSubRegionFromLanguage(string language)
+    public static string GetSubRegionFromLanguage(CardLanguage language)
     {
         return language switch
         {
-            "CN" => "F",
-            "ID" => "I",
-            "TH" => "T",
-            // Custom
-            "KO" => "K",
+            CardLanguage.SCN => "C",
+            CardLanguage.TCN => "F",
+            CardLanguage.ID => "I",
+            CardLanguage.TH => "T",
+            CardLanguage.KO => "K",
             _ => default
         };
     }

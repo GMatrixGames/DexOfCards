@@ -16,8 +16,8 @@ public static class DataStorage
 
     public static void Init()
     {
-        InitCards();
         InitSets();
+        InitCards();
     }
 
     public static async void InitCards()
@@ -57,36 +57,38 @@ public static class DataStorage
     }
 
     public static List<CardSetModel> GetAllSets() => CardSets.OrderByDescending(a => a.ReleaseDate).ToList();
-    public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet);
+    public static CardSetModel GetSet(CardModel model) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet.SetId);
     public static CardSetModel GetSet(string model) => CardSets.FirstOrDefault(a => a.SetId == model);
-    public static Dictionary<string, CardSetModel> GetRegionSets(CardSetModel orig)
+    public static Dictionary<string, List<CardSetModel>> GetSetsByLanguage()
     {
-        // Lang, Model
-        var ret = new Dictionary<string, CardSetModel>();
+        var ret = new Dictionary<string, List<CardSetModel>>();
 
-        foreach (var set in CardSets)
+        foreach (var value in Enum.GetValues<CardLanguage>())
         {
-            if (!string.IsNullOrWhiteSpace(set.SubRegion) && set.SetId.SubstringBefore('_') == orig.SetId)
-            {
-                ret.Add(CardSetModel.GetLanguageFromSubRegion(set.SubRegion), set);
-            }
-            else if (set.SetId.SubstringBefore('_') == orig.SetId && orig.Languages.Contains("KO"))
-            {
-                ret.Add("KO", orig);
-            }
+            var lang = value.ToString();
+            var setsByLanguage = GetAllSets().Where(a => a.Language == lang).ToList();
+
+            if (setsByLanguage.Count <= 0) continue;
+            ret.Add(lang, setsByLanguage);
         }
 
+        return ret;
+    }
+    public static List<CardSetModel> GetSetByLanguage(CardLanguage lang)
+    {
+        GetSetsByLanguage().TryGetValue(lang.ToString(), out var ret);
+        ret ??= new List<CardSetModel>();
         return ret;
     }
     public static List<CardModel> GetAllCards() => Cards;
     public static List<CardModel> GetCards(string set) => GetCards(GetSet(set));
     public static List<CardModel> GetCards(CardSetModel model)
     {
-        var allCards = GetAllCards().Where(a => a.CardSet == model.SetId).ToList();
+        var allCards = GetAllCards().Where(a => a.CardSet?.SetId == model.SetId).ToList();
         var allNormal = allCards
-            .Where(a => int.TryParse(a.CardNumber, out _))
-            .OrderBy(a => int.Parse(a.CardNumber));
-        var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber, out _)).ToList();
+            .Where(a => int.TryParse(a.CardNumber.Replace("a", ""), out _))
+            .OrderBy(a => int.Parse(a.CardNumber.Replace("a", "")));
+        var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber.Replace("a", ""), out _)).ToList();
         var allEnergyNoNumber = allExtra.Where(a => a.IsEnergy);
         allExtra = allExtra.Where(a => !a.IsEnergy)
             .OrderBy(a => int.Parse(a.CardNumber

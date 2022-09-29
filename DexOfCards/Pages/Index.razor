@@ -1,5 +1,6 @@
-﻿@page "/"
+﻿@page "/oldIndex"
 @using DexOfCards.Framework.Data
+@using DexOfCards.Framework.Data.Models
 
 <main class="flex-shrink-0">
     <div class="container px-4">
@@ -11,7 +12,7 @@
                         <div class="col-12 p-1">
                             <h1 class="text-center fw-bold mb-3" style="color: white">Global Sets</h1>
                             <div class="row gy-3 corner-radial" style="background-color: black">
-                                @foreach (var set in sets.Where(a => a.Languages.Contains("NonAsia")))
+                                @foreach (var set in sets.Where(a => a.Language != "NonAsia"))
                                 {
                                     <div class="col-12 col-sm-6">
                                         <a class="d-block text-reset" href="/set/@set.SetId">
@@ -34,7 +35,7 @@
                         <div class="col-12 p-1">
                             <h1 class="text-center fw-bold mb-3" style="color: white">Asia-based Sets</h1>
                             <div class="row gy-3 corner-radial" style="background-color: black">
-                                @foreach (var set in sets.Where(a => !a.Languages.Contains("NonAsia")))
+                                @foreach (var set in sets.Where(a => a.Language != "NonAsia"))
                                 {
                                     <div class="col-12 col-sm-6">
                                         <div class="d-block text-reset">
@@ -46,11 +47,11 @@
                                                     </div>
                                                 </a>
                                                 <div class="text-center set-logo">
-                                                    @foreach (var (subsetLang, subset) in DataStorage.GetRegionSets(set))
+                                                    @foreach (var (subsetLang, subset) in Array.Empty<Tuple<string, CardSetModel>>())
                                                     {
                                                         <div class="d-inline-block">
                                                             <a href="/set/@subset.SetId">
-                                                                <img class="img-fluid card corner-radial" src="images/icons/@(subsetLang).svg" style="max-height: 35px !important; margin: 2px;" alt/>
+                                                                <img class="img-fluid card corner-radial" src="images/icons/@(subsetLang).png" style="max-height: 35px !important; margin: 2px;" alt/>
                                                             </a>
                                                         </div>
                                                     }

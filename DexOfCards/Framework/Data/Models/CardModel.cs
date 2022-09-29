@@ -8,7 +8,7 @@ public class CardModel
     public CardModel(string name, string set, string number, string image, string language, IEnumerable<string> styles)
     {
         CardName = name;
-        CardSet = set;
+        CardSet = DataStorage.GetSet(set);
         CardNumber = number;
         Image = image;
         Language = language;
@@ -21,14 +21,14 @@ public class CardModel
     }
 
     public string CardName { get; }
-    public string CardSet { get; }
+    public CardSetModel CardSet { get; }
     public string CardNumber { get; }
     private string Image { get; }
     public string Language { get; }
     public List<string> Styles { get; } = new();
 
-    public string CardImage => $"images/Cards/{CardSet}/{Image}";
+    public string CardImage => $"images/Cards/{CardSet.Language}/{CardSet.SetId}/{Image}";
 
     public bool IsEnergy => CardNumber
-        is "PSY" or "DAR" or "FIG" or "FIR" or "GRA" or "LIG" or "MET" or "WAT";
+        is "PSY" or "DAR" or "FIG" or "FIR" or "GRA" or "LIG" or "MET" or "WAT" or "FAI";
 }
