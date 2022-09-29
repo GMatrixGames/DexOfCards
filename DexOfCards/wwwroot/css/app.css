@@ -30,6 +30,16 @@ a, .btn-link {
     }
 }
 
+.b-bar-vertical-inline.b-bar-dark .b-bar-link:hover, .b-bar-vertical-popout.b-bar-dark .b-bar-link:hover, .b-bar-vertical-small.b-bar-dark .b-bar-link:hover, .subsubselect.b-bar-dark .b-bar-link:hover {
+    color: var(--b-bar-item-dark-hover-color, #fff);
+    background: unset !important;
+}
+
+.b-bar-vertical-inline.b-bar-dark .b-bar-link.active, .b-bar-vertical-popout.b-bar-dark .b-bar-link.active, .b-bar-vertical-small.b-bar-dark .b-bar-link.active, .subsubselect.b-bar-dark .b-bar-link.active {
+    color: var(--b-bar-item-dark-hover-color, #fff);
+    background: var(--b-bar-item-dark-active-background, #0288D1) !important;
+}
+
 .lang {
     background-color: gray;
     border-radius: 15px;

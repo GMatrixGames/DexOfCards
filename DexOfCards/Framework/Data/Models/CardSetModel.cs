@@ -11,7 +11,8 @@ public class CardSetModel
         SetId = id;
         Language = language;
         IsAsia = language != "NonAsia";
-        SetName = $"{name} {(IsAsia ? $"({language})" : "")}";
+        SetNameNoLang = name;
+        SetName = $"{SetNameNoLang} {(IsAsia ? $"({language})" : "")}";
         CardsInSet = cardAmount;
         SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{language}/{image}";
         if (IsAsia && !File.Exists(Path.Combine(FilePaths.WwwRoot, SetImage.Replace("/", @"\"))))
@@ -20,6 +21,7 @@ public class CardSetModel
     }
 
     public string SetId { get; }
+    public string SetNameNoLang { get; }
     public string SetName { get; }
     public string CardsInSet { get; }
     public string SetImage { get; }

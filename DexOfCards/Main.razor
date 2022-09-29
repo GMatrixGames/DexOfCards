@@ -1,3 +1,6 @@
+@using DexOfCards.Framework.Data.Models
+@using DexOfCards.Framework.Data
+@using DexOfCards.Utilities
 <ThemeProvider Theme="@theme">
     <Layout>
         <Layout Sider>
@@ -34,6 +37,38 @@
                                         </BarLink>
                                     </BarItem>
                                 }
+                                <BarItem>
+                                    <BarDropdown>
+                                        <BarDropdownToggle>
+                                            <BarIcon IconName="IconName.IdCard"/>
+                                            All Sets
+                                        </BarDropdownToggle>
+                                        <BarDropdownMenu>
+                                            @foreach (var cardLang in Enum.GetValues<CardLanguage>())
+                                            {
+                                                <BarItem>
+                                                    <BarDropdown>
+                                                        <BarDropdownToggle Style="font-size: 15px; display: inline-block">
+                                                            <img class="b-bar-icon" src="images/icons/@(cardLang.ToString()).png" style="max-height: 25px" alt/>
+                                                            @cardLang.GetDescription() Cards
+                                                        </BarDropdownToggle>
+                                                        <BarDropdownMenu>
+                                                            @foreach (var set in DataStorage.GetSetByLanguage(cardLang))
+                                                            {
+                                                                <BarDropdownItem>
+                                                                    <BarLink To=@($"/set/{set.SetId}/{set.Language}") Class="subsubselect">
+                                                                        <img class="b-bar-icon" src="@set.SetImage" width="@(set.IsAsia ? "30" : "20")" alt/>
+                                                                        @set.SetNameNoLang
+                                                                    </BarLink>
+                                                                </BarDropdownItem>
+                                                            }
+                                                        </BarDropdownMenu>
+                                                    </BarDropdown>
+                                                </BarItem>
+                                            }
+                                        </BarDropdownMenu>
+                                    </BarDropdown>
+                                </BarItem>
                             </BarStart>
                         </BarMenu>
                     </Bar>
@@ -84,6 +119,7 @@
                     ActiveBackgroundColor = "#F83526"
                 }
             },
+            VerticalWidth = "325px",
         },
         ColorOptions = new ThemeColorOptions
         {
