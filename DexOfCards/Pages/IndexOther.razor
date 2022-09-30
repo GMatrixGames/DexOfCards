@@ -6,25 +6,25 @@
 <main class="flex-shrink-0">
     <section class="jumbotron text-center">
         <div class="container">
-            <h1>Set Language Selector</h1>
+            <h1 class="text-center fw-bold mb-3" style="color: white">Set Language Selector</h1>
             <div class="row justify-content-center">
                 <div class="col-12">
                     @foreach (var lang in Enum.GetValues<CardLanguage>())
                     {
                         <div class="col-12 col-sm-3">
                             <div class="@(currentLanguage == lang ? "activeLang" : "lang")">
-                                <button class="m-3 btn btn-outline-secondary btn-flag" onclick="@(() => SetLang(lang))">
+                                <button class="text-center p-3 btn btn-outline-secondary btn-flag" onclick="@(() => SetLang(lang))">
                                     <img src="images/icons/@(lang.ToString()).png" style="max-height: 35px !important;" alt>
                                 </button>
                             </div>
-                            </div>
+                        </div>
                     }
                 </div>
 
                 <div class="col-12">
                     <div class="row gy-3">
                         <div class="col-12">
-                            <h1 class="text-center fw-bold mb-3">Available @currentLanguage.GetDescription() Sets</h1>
+                            <h1 class="text-center fw-bold mb-3" style="color: white">Available @currentLanguage.GetDescription() Sets</h1>
                             <div class="row gy-3 corner-radial" style="background-color: black">
                                 @foreach (var set in DataStorage.GetSetByLanguage(currentLanguage))
                                 {
