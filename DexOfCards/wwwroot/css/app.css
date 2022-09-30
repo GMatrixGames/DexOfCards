@@ -23,10 +23,17 @@ a, .btn-link {
     padding: 2px 8px;
 }
 
-@media (min-width: 768px) {
-    .col-md-2 {
+button:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+@media (min-width: 576px) {
+    .col-lang-button {
         flex: 0 0 auto;
-        width: 13.33333333%;
+        width: 9.66666667%;
+        min-width: 9.66666667%;
     }
 }
 
@@ -42,12 +49,12 @@ a, .btn-link {
 
 .lang {
     background-color: gray;
-    border-radius: 15px;
+    border-radius: 30px;
 }
 
 .activeLang {
     background-color: lightgray;
-    border-radius: 15px;
+    border-radius: 30px;
 }
 
 .btn-primary {
