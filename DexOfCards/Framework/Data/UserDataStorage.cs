@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
 using DexOfCards.Framework.Data.Models;
@@ -9,6 +10,25 @@ namespace DexOfCards.Framework.Data;
 
 public static class UserDataStorage
 {
+    private static readonly List<OwnedCardModel> OwnedCards = new();
+
+    public static async void InitOwned()
+    {
+        OwnedCards.Clear();
+        await using var conn = SQLite.GetUserDataSql();
+        var read = await conn.ExecuteReaderAsync("SELECT * FROM owned_cards");
+        while (await read.ReadAsync())
+        {
+            OwnedCards.Add(new OwnedCardModel(
+                read.GetString("cardSet"),
+                read.GetString("cardNumber"),
+                read.GetString("language"),
+                read.GetString("type"),
+                read.GetInt32("amount")
+            ));
+        }
+    }
+
     // public static async Task<int> AddNewCard(CardModel model, string style)
     // {
     //     var currentAmount = await GetOwnedAmount(model);
