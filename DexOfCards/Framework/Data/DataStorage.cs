@@ -90,7 +90,25 @@ public static class DataStorage
             .OrderBy(a => int.Parse(a.CardNumber.Replace("a", "")));
         var allExtra = allCards.Where(a => !int.TryParse(a.CardNumber.Replace("a", ""), out _)).ToList();
         var allEnergyNoNumber = allExtra.Where(a => a.IsEnergy);
-        allExtra = allExtra.Where(a => !a.IsEnergy)
+        var allUnparsed = allExtra.Where(a => !a.IsEnergy && !int.TryParse(a.CardNumber
+                .Replace("SV", "")
+                .Replace("TG", "")
+                .Replace("RC", "")
+                .Replace("CC", "")
+                .Replace("BW", "")
+                .Replace("XY", "")
+                .Replace("SM", "")
+                .Replace("SWSH", ""), out _))
+            .OrderBy(a => a.CardNumber);
+        allExtra = allExtra.Where(a => !a.IsEnergy && int.TryParse(a.CardNumber
+                .Replace("SV", "")
+                .Replace("TG", "")
+                .Replace("RC", "")
+                .Replace("CC", "")
+                .Replace("BW", "")
+                .Replace("XY", "")
+                .Replace("SM", "")
+                .Replace("SWSH", ""), out _))
             .OrderBy(a => int.Parse(a.CardNumber
                 .Replace("SV", "")
                 .Replace("TG", "")
@@ -103,6 +121,7 @@ public static class DataStorage
 
         var cards = allNormal.ToList();
         cards.AddRange(allExtra);
+        cards.AddRange(allUnparsed);
         cards.AddRange(allEnergyNoNumber);
         return cards;
     }
