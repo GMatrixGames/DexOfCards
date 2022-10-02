@@ -99,6 +99,30 @@
                                         Card Collection
                                     </h6>
                                     <div class="card-body">
+                                        @if (UserDataStorage.GetOwnedCardsFromSet(CardSet).GetAwaiter().GetResult() is {Count: > 0} cards)
+                                        {
+                                            <div class="table-responsive">
+                                                <Table>
+                                                    <TableHeader>
+                                                        <TableRow>
+                                                            <TableHeaderCell>Amount</TableHeaderCell>
+                                                            <TableHeaderCell>Style</TableHeaderCell>
+                                                            <TableHeaderCell>Edit</TableHeaderCell>
+                                                        </TableRow>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        @foreach (var card in cards)
+                                                        {
+                                                            <TableRow Style="vertical-align: middle;">
+                                                                <TableRowCell>@card.Amount</TableRowCell>
+                                                                <TableRowCell>@card.Style</TableRowCell>
+                                                                <TableRowCell>Test</TableRowCell>
+                                                            </TableRow>
+                                                        }
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        }
                                         <form>
                                             <div style="width: 49%; display: inline-block; vertical-align: top; float: left">
                                                 <div class="form-group">

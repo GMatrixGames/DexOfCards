@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
@@ -10,16 +11,15 @@ namespace DexOfCards.Framework.Data;
 
 public static class UserDataStorage
 {
-    private static readonly List<OwnedCardModel> OwnedCards = new();
-
-    public static async void InitOwned()
+    public static async Task<List<OwnedCardModel>> GetOwnedCardsFromSet(CardSetModel set)
     {
-        OwnedCards.Clear();
+        var ret = new List<OwnedCardModel>();
+
         await using var conn = SQLite.GetUserDataSql();
-        var read = await conn.ExecuteReaderAsync("SELECT * FROM owned_cards");
+        var read = await conn.ExecuteReaderAsync($"SELECT * FROM owned_cards WHERE cardSet = '{set.SetId}' AND language = '{set.Language}'");
         while (await read.ReadAsync())
         {
-            OwnedCards.Add(new OwnedCardModel(
+            ret.Add(new OwnedCardModel(
                 read.GetString("cardSet"),
                 read.GetString("cardNumber"),
                 read.GetString("language"),
@@ -27,39 +27,20 @@ public static class UserDataStorage
                 read.GetInt32("amount")
             ));
         }
+
+        return ret;
     }
 
-    // public static async Task<int> AddNewCard(CardModel model, string style)
-    // {
-    //     var currentAmount = await GetOwnedAmount(model);
-    //     var addedOne = currentAmount + 1;
-    //     await using var conn = SQLite.GetUserDataSql();
-    //     conn.ExecuteNoQuery($"UPDATE owned_cards SET amount = @amount WHERE cardSet = '{model.CardSet}' AND cardNumber = '{model.CardNumber}'", new[]
-    //     {
-    //         new SQLiteParameter("@amount", addedOne)
-    //     });
-    //     return addedOne;
-    // }
-    //
-    // public static async Task<int> RemoveCard(CardModel model, string style)
-    // {
-    //     var currentAmount = await GetOwnedAmount(model);
-    //     var removedOne = currentAmount - 1;
-    //     await using var conn = SQLite.GetUserDataSql();
-    //     conn.ExecuteNoQuery($"UPDATE owned_cards SET amount = @amount WHERE cardSet = '{model.CardSet}' AND cardNumber = '{model.CardNumber}'", new[]
-    //     {
-    //         new SQLiteParameter("@amount", removedOne)
-    //     });
-    //     return removedOne;
-    // }
-    //
-    // public static async Task<int> GetOwnedAmount(CardModel model, string style)
-    // {
-    //     var amount = 0;
-    //     if (model == null) return amount;
-    //     await using var conn = SQLite.GetUserDataSql();
-    //     var read = await conn.ExecuteReaderAsync($"SELECT * FROM owned_cards WHERE cardSet = '{model.CardSet}' AND cardNumber = '{model.CardNumber}' ");
-    //     if (await read.ReadAsync()) amount = read.GetInt32("amount");
-    //     return amount;
-    // }
+    public static async Task<Tuple<string, int>> UpdateCard(OwnedCardModel oldCard, OwnedCardModel newCard)
+    {
+        oldCard ??= new OwnedCardModel(newCard.CardSet, newCard.CardNumber, newCard.Style, newCard.Amount);
+
+        await using var conn = SQLite.GetUserDataSql();
+        conn.ExecuteNoQuery($"UPDATE owned_cards SET amount = @amount WHERE cardSet = '{oldCard.CardSet}' AND cardNumber = '{oldCard.CardNumber}' AND type = '{oldCard.Style}'", new[]
+        {
+            new SQLiteParameter("@amount", newCard.Amount)
+        });
+
+        return new Tuple<string, int>(newCard.Style, newCard.Amount);
+    }
 }

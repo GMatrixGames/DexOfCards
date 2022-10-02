@@ -9,12 +9,12 @@ public class CardSetModel
     public CardSetModel(string id = "???", string name = "???", string cardAmount = "???", string image = "???", string language = "???", DateTime? releaseDate = default)
     {
         SetId = id;
-        Language = language;
-        IsAsia = language != "NonAsia";
+        Language = Enum.Parse<CardLanguage>(language);
+        IsAsia = Language != CardLanguage.NonAsia;
         SetNameNoLang = name;
-        SetName = $"{SetNameNoLang} {(IsAsia ? $"({language})" : "")}";
+        SetName = $"{SetNameNoLang} {(IsAsia ? $"({Language})" : "")}";
         CardsInSet = cardAmount;
-        SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{language}/{image}";
+        SetImage = image is "Promo_Asia.png" or "Promo.png" ? $"images/Sets/{image}" : $"images/Sets/{Language}/{image}";
         if (IsAsia && !File.Exists(Path.Combine(FilePaths.WwwRoot, SetImage.Replace("/", @"\"))))
             SetImage = $"images/Sets/JP/{image}";
         ReleaseDate = releaseDate ?? DateTime.Now;
@@ -25,7 +25,7 @@ public class CardSetModel
     public string SetName { get; }
     public string CardsInSet { get; }
     public string SetImage { get; }
-    public string Language { get; }
+    public CardLanguage Language { get; }
     public DateTime ReleaseDate { get; }
     public bool IsAsia { get; }
 

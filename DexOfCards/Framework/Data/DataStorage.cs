@@ -57,26 +57,25 @@ public static class DataStorage
     }
 
     public static List<CardSetModel> GetAllSets() => CardSets.OrderByDescending(a => a.ReleaseDate).ToList();
-    public static CardSetModel GetSet(CardModel model, CardLanguage lang = CardLanguage.NonAsia) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet.SetId && a.Language == lang.ToString());
-    public static CardSetModel GetSet(string model, CardLanguage lang = CardLanguage.NonAsia) => CardSets.FirstOrDefault(a => a.SetId == model && a.Language == lang.ToString());
-    public static Dictionary<string, List<CardSetModel>> GetSetsByLanguage()
+    public static CardSetModel GetSet(CardModel model, CardLanguage lang = CardLanguage.NonAsia) => CardSets.FirstOrDefault(a => a.SetId == model.CardSet.SetId && a.Language == lang);
+    public static CardSetModel GetSet(string model, CardLanguage lang = CardLanguage.NonAsia) => CardSets.FirstOrDefault(a => a.SetId == model && a.Language == lang);
+    public static Dictionary<CardLanguage, List<CardSetModel>> GetSetsByLanguage()
     {
-        var ret = new Dictionary<string, List<CardSetModel>>();
+        var ret = new Dictionary<CardLanguage, List<CardSetModel>>();
 
         foreach (var value in Enum.GetValues<CardLanguage>())
         {
-            var lang = value.ToString();
-            var setsByLanguage = GetAllSets().Where(a => a.Language == lang).ToList();
+            var setsByLanguage = GetAllSets().Where(a => a.Language == value).ToList();
 
             if (setsByLanguage.Count <= 0) continue;
-            ret.Add(lang, setsByLanguage);
+            ret.Add(value, setsByLanguage);
         }
 
         return ret;
     }
     public static List<CardSetModel> GetSetByLanguage(CardLanguage lang)
     {
-        GetSetsByLanguage().TryGetValue(lang.ToString(), out var ret);
+        GetSetsByLanguage().TryGetValue(lang, out var ret);
         ret ??= new List<CardSetModel>();
         return ret;
     }
@@ -84,7 +83,7 @@ public static class DataStorage
     public static List<CardModel> GetCards(string set, CardLanguage lang = CardLanguage.NonAsia) => GetCards(GetSet(set, lang));
     public static List<CardModel> GetCards(CardSetModel model)
     {
-        var allCards = GetAllCards().Where(a => a.CardSet?.SetId == model.SetId && a.Language.ToString() == model.Language).ToList();
+        var allCards = GetAllCards().Where(a => a.CardSet?.SetId == model.SetId && a.Language == model.Language).ToList();
         var allNormal = allCards
             .Where(a => int.TryParse(a.CardNumber.Replace("a", ""), out _))
             .OrderBy(a => int.Parse(a.CardNumber.Replace("a", "")));

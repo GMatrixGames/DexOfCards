@@ -4,7 +4,16 @@ namespace DexOfCards.Framework.Data.Models;
 
 public class OwnedCardModel
 {
-    public OwnedCardModel(string set, string number, string language, string variant, int amount)
+    public OwnedCardModel(CardSetModel set, string number, string variant, int amount = 0)
+    {
+        CardSet = set;
+        Language = CardSet.Language;
+        CardNumber = number;
+        Style = variant;
+        Amount = amount;
+    }
+
+    public OwnedCardModel(string set, string number, string language, string variant, int amount = 0)
     {
         Language = Enum.Parse<CardLanguage>(language);
         CardSet = DataStorage.GetSet(set, Language);
