@@ -20,4 +20,11 @@ public static class SqlExtensions
         if (parameters is { Length: > 0 }) ex.Parameters.AddRange(parameters);
         ex.ExecuteNonQuery();
     }
+
+    public static T ExecuteScalar<T>(this SQLiteConnection connection, string command)
+    {
+        var ex = new SQLiteCommand(command, connection);
+        var reader = ex.ExecuteScalar();
+        return reader is T val ? val : default;
+    }
 }
